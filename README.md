@@ -14,3 +14,12 @@ A collection of AI-powered workflows built during my 30-day AI skill building jo
   saves question + AI reply to Google Sheets automatically
 - Skills: REST API calls, JSON parsing, Claude API integration, 
   prompt engineering, multi-node workflow design
+
+## Project 2b: Claude AI Agent (Make.com version)
+- Tools: Make.com, Anthropic Claude API, Google Sheets
+- What it does: Same as n8n version — receives question via webhook,
+  sends to Claude, saves Q&A to Google Sheets
+- Key learning: Make.com uses {{module_number.field}} syntax vs 
+  n8n's $('NodeName').item.json.body.field syntax
+- Skills: Make.com scenario design, HTTP modules, 
+  webhook handling, Google Sheets integration
