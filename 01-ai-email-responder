@@ -1,0 +1,28 @@
+# AI Email Responder Agent
+
+## What it does
+Automatically reads incoming Gmail emails, generates a 
+professional reply using Claude AI, and saves it as a 
+Gmail Draft — ready for human review and sending.
+
+## Workflow
+Gmail Trigger → Claude API (with prompt engineering) → 
+Extract Reply → Save as Gmail Draft
+
+## Tools Used
+- n8n (workflow automation)
+- Anthropic Claude API (claude-sonnet-4)
+- Gmail API (read + draft)
+
+## Business Value
+- Reduces email response time from hours to seconds
+- Maintains professional tone consistently
+- Human stays in control — reviews draft before sending
+- Scalable to any email volume
+
+## Skills Demonstrated
+- Webhook and trigger-based automation
+- REST API integration (Anthropic)
+- Prompt engineering for professional output
+- Gmail API (OAuth, read, create draft)
+- Multi-node workflow design
