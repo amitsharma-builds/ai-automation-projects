@@ -1,23 +1,21 @@
 # Lead Qualifier Agent
 
-## What it does
-Takes a CSV of company names, researches each one using 
-Claude AI, scores them 1-10 as potential leads for AI 
-automation services, and outputs a qualified leads CSV.
+## Two Ways to Use
 
-## How to run
-1. Add your Anthropic API key to .env file
-2. pip install -r requirements.txt
-3. python lead_qualifier.py
-4. Check qualified_leads.csv for results
+### 1. Command Line
+python lead_qualifier.py
 
-## Tools Used
-- Python + Pandas
-- Anthropic Claude API
-- python-dotenv (secure key management)
-- Cursor IDE (vibe coding)
+### 2. Web App (Streamlit)
+streamlit run app.py
+Then open http://localhost:8501
 
-## Business Value
-Replaces hours of manual lead research with a 
-seconds-long automated process. Scalable to 
-thousands of leads.
+## Features
+- Upload any CSV with company leads
+- Claude AI scores each lead 1-10
+- Color-coded results table
+- Top 3 leads highlighted
+- Download results as CSV
+- Real-time progress bar
+
+## Demo
+https://drive.google.com/file/d/1yvwNcCqnVJI3o6_9kmQlrdtOD5i7Sj4w/view?usp=sharing
