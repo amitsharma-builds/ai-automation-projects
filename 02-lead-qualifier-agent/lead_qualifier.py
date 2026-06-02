@@ -9,9 +9,11 @@ from pathlib import Path
 import pandas as pd
 from anthropic import Anthropic
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 INPUT_CSV = "leads.csv"
 OUTPUT_CSV = "qualified_leads.csv"
+SUMMARY_FILE = "leads_summary.txt"
 DELAY_SECONDS = 1
 MODEL = "claude-sonnet-4-20250514"
 
@@ -21,7 +23,15 @@ Company: {company_name}
 Industry: {industry}
 Size: {size}
 
-Respond in exactly this JSON format:
+Think step by step before you score:
+
+Step 1 — Pain points: What operational challenges, inefficiencies, or scaling pains is this company likely facing given their industry and size?
+
+Step 2 — AI automation fit: How much would they benefit from AI automation? Consider transaction volume, manual workflows, tech maturity, budget signals, and realistic automation opportunities.
+
+Step 3 — Final judgment: Based on steps 1 and 2, assign a lead score from 1 (poor fit) to 10 (excellent fit) and explain in one sentence.
+
+Respond in exactly this JSON format (your final answer must be only this JSON object):
 {{
   'score': <number 1-10>,
   'reason': '<one sentence why>',
@@ -96,7 +106,7 @@ def qualify_company(
 
     message = client.messages.create(
         model=MODEL,
-        max_tokens=512,
+        max_tokens=1024,
         messages=[{"role": "user", "content": prompt}],
     )
 
@@ -106,10 +116,68 @@ def qualify_company(
     return parse_claude_response(message.content[0].text)
 
 
+def build_summary(df: pd.DataFrame) -> str:
+    """Build a text summary from qualified leads with valid scores."""
+    valid = df.dropna(subset=["score"]).copy()
+    valid["score"] = valid["score"].astype(int)
+
+    lines = [
+        "=" * 50,
+        "LEAD QUALIFICATION SUMMARY",
+        "=" * 50,
+        "",
+        f"Total leads processed: {len(df)}",
+        f"Successfully scored: {len(valid)}",
+        f"Failed or skipped: {len(df) - len(valid)}",
+        "",
+    ]
+
+    if valid.empty:
+        lines.append("No valid scores to summarize.")
+        return "\n".join(lines)
+
+    avg_score = valid["score"].mean()
+    lines.append(f"Average score: {avg_score:.2f}")
+    lines.append("")
+
+    top3 = valid.nlargest(3, "score")
+    lines.append("Top 3 leads by score:")
+    lines.append("-" * 50)
+    for rank, row in enumerate(top3.itertuples(index=False), start=1):
+        lines.append(
+            f"  {rank}. {row.company_name} ({row.industry}) — "
+            f"Score: {row.score}"
+        )
+        lines.append(f"     Reason: {row.reason}")
+    lines.append("")
+
+    industry_avg = valid.groupby("industry", as_index=False)["score"].mean()
+    industry_avg = industry_avg.sort_values("score", ascending=False)
+    best_row = industry_avg.iloc[0]
+    lines.append("Industry rankings (average score):")
+    lines.append("-" * 50)
+    for row in industry_avg.itertuples(index=False):
+        lines.append(f"  {row.industry}: {row.score:.2f}")
+    lines.append("")
+    lines.append(
+        f"Highest-scoring industry on average: {best_row.industry} "
+        f"({best_row.score:.2f})"
+    )
+    lines.append("")
+    lines.append("=" * 50)
+
+    return "\n".join(lines)
+
+
+def save_summary(summary: str, output_path: Path) -> None:
+    output_path.write_text(summary, encoding="utf-8")
+
+
 def main() -> None:
     base_dir = Path(__file__).resolve().parent
     input_path = base_dir / INPUT_CSV
     output_path = base_dir / OUTPUT_CSV
+    summary_path = base_dir / SUMMARY_FILE
 
     if not input_path.exists():
         print(f"Error: {input_path} not found.", file=sys.stderr)
@@ -133,15 +201,14 @@ def main() -> None:
         sys.exit(1)
 
     results = []
-    total = len(df)
+    rows = list(df.iterrows())
 
-    for index, row in df.iterrows():
+    for index, (_, row) in enumerate(
+        tqdm(rows, desc="Qualifying leads", unit="lead")
+    ):
         company_name = str(row["company_name"]).strip()
         industry = str(row["industry"]).strip()
         size = str(row["size"]).strip()
-        position = int(index) + 1
-
-        print(f"[{position}/{total}] Qualifying: {company_name}...")
 
         result_row = {
             "company_name": company_name,
@@ -157,23 +224,35 @@ def main() -> None:
             result_row["score"] = parsed["score"]
             result_row["reason"] = parsed["reason"]
             result_row["best_use_case"] = parsed["best_use_case"]
-            print(f"  -> Score: {parsed['score']} | {parsed['reason']}")
+            tqdm.write(
+                f"  {company_name}: score {parsed['score']} — {parsed['reason']}"
+            )
         except Exception as exc:
             result_row["reason"] = f"Error: {exc}"
-            print(f"  -> Failed: {exc}", file=sys.stderr)
+            tqdm.write(f"  {company_name}: failed — {exc}")
 
         results.append(result_row)
 
-        if position < total:
+        if index < len(rows) - 1:
             time.sleep(DELAY_SECONDS)
 
     try:
         out_df = pd.DataFrame(results)
         out_df.to_csv(output_path, index=False)
-        print(f"\nDone. Wrote {len(out_df)} rows to {output_path}")
+        tqdm.write(f"\nWrote {len(out_df)} rows to {output_path}")
     except Exception as exc:
         print(f"Error writing output CSV: {exc}", file=sys.stderr)
         sys.exit(1)
+
+    summary = build_summary(out_df)
+    try:
+        save_summary(summary, summary_path)
+        tqdm.write(f"Wrote summary to {summary_path}")
+    except Exception as exc:
+        print(f"Error writing summary file: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    print("\n" + summary)
 
 
 if __name__ == "__main__":

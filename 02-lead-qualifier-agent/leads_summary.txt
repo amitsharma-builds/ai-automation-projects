@@ -1,0 +1,35 @@
+==================================================
+LEAD QUALIFICATION SUMMARY
+==================================================
+
+Total leads processed: 10
+Successfully scored: 10
+Failed or skipped: 0
+
+Average score: 8.70
+
+Top 3 leads by score:
+--------------------------------------------------
+  1. Zomato (Food Delivery) — Score: 9
+     Reason: Zomato's massive scale, high transaction volume, and tech-forward approach make them an ideal candidate for AI automation across multiple operational areas.
+  2. Razorpay (Fintech) — Score: 9
+     Reason: Fintech companies like Razorpay have high transaction volumes, strong technical infrastructure, and multiple manual processes (fraud detection, KYC, customer support) that are perfect candidates for AI automation with clear ROI.
+  3. Meesho (E-commerce) — Score: 9
+     Reason: Meesho is a tech-savvy unicorn with massive transaction volumes, substantial budget, and multiple high-impact AI automation opportunities across their social commerce platform.
+
+Industry rankings (average score):
+--------------------------------------------------
+  Automotive: 9.00
+  E-commerce: 9.00
+  Fintech: 9.00
+  Food Delivery: 9.00
+  Investment App: 9.00
+  Home Services: 9.00
+  Logistics: 9.00
+  FMCG: 8.00
+  Healthcare: 8.00
+  Retail: 8.00
+
+Highest-scoring industry on average: Automotive (9.00)
+
+==================================================
