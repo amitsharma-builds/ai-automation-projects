@@ -1,0 +1,21 @@
+date,product,region,sales_amount,units_sold,customer_segment
+2024-01-05,Product A,North,45000,120,Enterprise
+2024-01-12,Product B,South,23000,89,SMB
+2024-01-18,Product A,East,67000,180,Enterprise
+2024-01-25,Product C,West,12000,45,Startup
+2024-02-03,Product B,North,34000,110,SMB
+2024-02-09,Product A,South,78000,210,Enterprise
+2024-02-14,Product C,East,19000,67,Startup
+2024-02-21,Product B,West,41000,134,SMB
+2024-03-02,Product A,North,89000,240,Enterprise
+2024-03-08,Product C,South,15000,52,Startup
+2024-03-15,Product B,East,52000,167,SMB
+2024-03-22,Product A,West,71000,195,Enterprise
+2024-04-01,Product C,North,28000,93,SMB
+2024-04-07,Product A,South,95000,258,Enterprise
+2024-04-13,Product B,West,38000,122,SMB
+2024-04-19,Product C,East,22000,78,Startup
+2024-05-04,Product A,North,103000,275,Enterprise
+2024-05-11,Product B,South,47000,151,SMB
+2024-05-17,Product C,West,31000,103,Startup
+2024-05-24,Product A,East,88000,237,Enterprise
