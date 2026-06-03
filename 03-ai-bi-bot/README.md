@@ -16,7 +16,7 @@ pip install -r requirements.txt
 streamlit run app.py
 
 ## Demo
-[Add demo video link]
+https://drive.google.com/file/d/1ulxYGI76wg7ICpy1keGFtRg49x_wi3pM/view?usp=sharing
 
 ## Built With
 - Python + Pandas (data processing)
