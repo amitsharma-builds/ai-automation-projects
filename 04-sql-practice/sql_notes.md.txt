@@ -1,0 +1,87 @@
+Concept 1: Basic Structure
+
+SELECT column1, column2    -- kya chahiye
+FROM table_name            -- kahan se
+WHERE condition            -- filter
+ORDER BY column            -- sort
+LIMIT 10;                  -- kitne rows
+
+Concept 2: Filtering — WHERE
+
+-- Equal
+WHERE name = 'India'
+
+-- Greater/Less than
+WHERE population > 1000000
+
+-- Between
+WHERE year BETWEEN 2020 AND 2024
+
+-- Multiple conditions
+WHERE country = 'India' AND year = 2023
+
+-- Either condition
+WHERE city = 'Mumbai' OR city = 'Delhi'
+
+-- Pattern matching
+WHERE name LIKE 'A%'      -- A se shuru
+WHERE name LIKE '%AI%'    -- AI anywhere
+
+Concept 3: Aggregations — Ye Most Used Hain
+
+COUNT(*)           -- kitne rows hain
+SUM(amount)        -- total
+AVG(score)         -- average
+MAX(salary)        -- highest
+MIN(price)         -- lowest
+
+Concept 4: GROUP BY — Grouping Data
+
+-- Sales by region
+SELECT region, SUM(amount)
+FROM sales
+GROUP BY region
+
+-- Count by category
+SELECT category, COUNT(*) as count
+FROM products
+GROUP BY category
+HAVING COUNT(*) > 5    -- HAVING = WHERE for groups
+
+Concept 5: JOIN — Multiple Tables Combine Karna
+
+-- Two tables join karo
+SELECT orders.id, customers.name, orders.amount
+FROM orders
+JOIN customers ON orders.customer_id = customers.id
+
+-- LEFT JOIN — sab orders dikhao, even without customer
+SELECT orders.id, customers.name
+FROM orders
+LEFT JOIN customers ON orders.customer_id = customers.id
+
+Concept 6: Useful Functions
+
+UPPER(name)              -- AMIT SHARMA
+LOWER(name)              -- amit sharma
+LENGTH(name)             -- character count
+ROUND(price, 2)          -- 2 decimal places
+COALESCE(value, 'N/A')  -- null replace karo
+
+Concept 7: Subqueries
+
+-- Companies with above average revenue
+SELECT company_name
+FROM companies
+WHERE revenue > (SELECT AVG(revenue) FROM companies)
+
+Concept 8: The Cheat Sheet — ORDER of Operations
+
+SELECT    -- 1. kya dikhana hai
+FROM      -- 2. kahan se
+JOIN      -- 3. tables combine karo
+WHERE     -- 4. rows filter karo
+GROUP BY  -- 5. group karo
+HAVING    -- 6. groups filter karo
+ORDER BY  -- 7. sort karo
+LIMIT     -- 8. rows limit karo
