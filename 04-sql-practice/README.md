@@ -1,20 +1,21 @@
-# SQL + AI Practice
+# SQL + AI Analysis Projects
 
-## What's here
-1. sql_with_python.py — SQLite database + 5 analytical queries
-2. ai_sql_assistant.py — Natural language to SQL using Claude API
+## Scripts
 
-## Key SQL concepts practiced
-- SELECT, WHERE, GROUP BY, ORDER BY
-- Aggregations: SUM, AVG, COUNT, MAX
-- JOIN operations
-- Subqueries
-- Python + pandas integration with SQL
+### Day 11 — Basics
+- sql_with_python.py — SQLite setup + basic queries
+- ai_sql_assistant.py — Natural language to SQL
 
-## The AI Part
-ai_sql_assistant.py converts plain English questions 
-to SQL using Claude — then executes them automatically.
+### Day 12 — Advanced
+- superstore_analysis.py — 8 analytical SQL queries 
+  on real retail dataset (9,994 rows)
+- superstore_ai_analysis.py — SQL results + 
+  Claude AI business analysis
 
-Example:
-Input: "Which region has highest average deal size?"
-Output: SQL query + results
+## Key SQL Concepts Covered
+SELECT, WHERE, GROUP BY, HAVING, ORDER BY,
+JOIN, Subqueries, Aggregations, Window basics
+
+## Dataset
+Kaggle Superstore Sales — 9,994 orders, 
+21 columns, 4 years of US retail data
